@@ -6,6 +6,49 @@
   <title>Message</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle at top, #2a003f, #0d001a);
+  overflow: hidden;
+}
+
+/* Message Box */
+.message-box {
+  max-width: 850px;
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.6), 0 0 45px rgba(255, 182, 193, 0.4);
+  animation: aura 6s ease-in-out infinite alternate;
+  backdrop-filter: blur(6px);
+  z-index: 1;
+  text-align: center;
+}
+
+/* Button */
+.neon-btn {
+  margin-top: 20px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+  transition: transform 0.2s ease-in-out;
+}
+
+.neon-btn:hover {
+  transform: scale(1.1);
+}
+
     /* 📱 Responsive adjustments */
 @media (max-width: 600px) {
   .message-box {
@@ -40,46 +83,13 @@ html, body {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: center;   /* centers horizontally */
-  align-items: center;       /* centers vertically */
+  justify-content: center;
+  align-items: center;
   background: radial-gradient(circle at center, #2b0033, #0d001a);
   background-size: cover;
   background-attachment: fixed;
-  overflow: hidden;          /* removes scrollbars */
-}
-
-
-.message-box {
-  width: 90%;        /* responsive */
-  max-width: 850px;  /* limit on desktop */
-  padding: 25px;
-  border-radius: 20px;
-  background: rgba(0,0,0,0.6);
-  box-shadow: 0 0 25px rgba(255, 105, 180, 0.6),
-              0 0 45px rgba(255, 182, 193, 0.4);
-  animation: aura 6s ease-in-out infinite alternate;
-  backdrop-filter: blur(6px);
-  text-align: center;
-  color: white;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-}
-
-
-/* Heading */
-.message-box h1 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
-}
-
-/* Paragraph */
-.message-box p {
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 12px 0;
-  text-shadow: 0 0 8px rgba(255,255,255,0.7);
-  text-align: center;
+  overflow-x: hidden;
+  overflow-y: auto;   /* ✅ allows scrolling on mobile if text is long */
 }
 
 /* Glow animation */
@@ -89,17 +99,34 @@ html, body {
   100% { box-shadow: 0 0 25px rgba(255, 20, 147, 0.9), 0 0 55px rgba(255, 182, 193, 0.6); }
 }
 
+/* Remove old pulse animation ✅ */
+/* (h1 span.heart { ... } and @keyframes pulse were deleted) */
+
+/* 💖 Glowing + Sparkling Heart */
+.sparkle-heart {
+  display: inline-block;
+  font-size: 1.2em;
+  color: #ff69b4;
+  text-shadow: 
+    0 0 8px #ff69b4,
+    0 0 15px #ff1493,
+    0 0 25px #ff33cc,
+    0 0 40px #ff66ff;
+}
 
 h1 {
-  font-size: clamp(20px, 5vw, 28px);  /* ✅ Responsive heading */
+  font-size: clamp(20px, 5vw, 28px);
   margin-bottom: 20px;
+  color: #fff;  /* ✅ make heading white */
   text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
+  
 }
 
 p {
-  font-size: clamp(12px, 3.5vw, 14px); /* ✅ Responsive text */
+  font-size: clamp(12px, 3.5vw, 14px);
   line-height: 1.6;
   margin: 12px 0;
+  color: #fff;  /* ✅ make paragraphs white */
   text-shadow: 0 0 8px rgba(255,255,255,0.7);
   min-height: 1.4em;
   text-align: center;
@@ -111,12 +138,11 @@ p {
     }
 
     b {
-      font-size: 18px;
-      color: #ffb6c1;
-      display: inline-block;
-      animation: shimmer 3s infinite;
-    }
-
+  font-size: 18px;
+  color: #ffb6c1;  /* ✅ already pink, keep it */
+  display: inline-block;
+  animation: shimmer 3s infinite;
+}
     @keyframes shimmer {
       0% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; }
       50% { text-shadow: 0 0 20px #ffb6c1, 0 0 40px #ff69b4; }
@@ -239,12 +265,53 @@ body::after {
   position: relative;
   z-index: 1;  /* ✅ ensures box is always on top */
 }
+.message-content {
+  max-height: 60vh;       /* makes sure text doesn't overflow screen */
+  overflow-y: auto;       /* enables scrolling if too much text */
+  padding-right: 8px;     /* avoids scrollbar overlap */
+}
+/* 🌟 Smooth fade on top & bottom for scroll area */
+.message-content {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 8px;
+  position: relative;
+  scrollbar-width: thin;          /* Firefox */
+  scrollbar-color: #ff69b4 #1a001f; /* custom scrollbar colors */
+}
+
+/* Subtle fade effect */
+.message-content::before,
+.message-content::after {
+  content: "";
+  position: sticky;
+  left: 0;
+  right: 0;
+  height: 30px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.message-content::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(13,0,26,0.9), transparent);
+}
+
+.message-content::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(13,0,26,0.9), transparent);
+}
+.message-content {
+  scroll-behavior: smooth;
+}
 
   </style>
 </head>
 <body>
-  <div class="message-box">
-  <h1>Happy Birthday, Rai ❤️</h1>
+<div class="message-box">
+  <h1>Happy Birthday, Rai <span class="sparkle-heart">💖</span></h1>
+
+
 
   <p id="line1"></p>
   <p id="line2"></p>
@@ -256,11 +323,12 @@ body::after {
   <p id="line8"><b></b></p>
 
   <!-- 🌟 New Start Button -->
-  <button id="startBtn" class="neon-btn">Start</button>
+  <button id="startBtn" class="neon-btn">START</button>
 
-  <!-- Celebrate Again (hidden initially) -->
-  <button id="celebrateBtn" class="neon-btn" style="display:none;" onclick="window.location.href='index.html'">Celebrate Again</button>
+  <!-- 🎉 Celebrate Again (redirects to index.html) -->
+  <button id="celebrateBtn" class="neon-btn" style="display:none;">Celebrate Again</button>
 </div>
+
 
 <!-- 🎵 Background music (play once, no loop) -->
 <audio id="bg-music">
@@ -347,12 +415,12 @@ function startConfetti(duration = 3000) {
     "But more than your beauty, it’s your personality that never stops astonishing me. You deserve to be cherished, adored, and worshipped like the goddess you are.",
     "I hope this year brings you endless joy, love, and success. May all your dreams come true, and may you continue to shine as brightly as you do now. I’m just so grateful to have you in my life, Rai.",
     "I don’t know what the future holds for us… but your presence alone feels like an ethereal butterfly soaring through my heart every single time we’re together.",
-    "Please... please... keep blessing me with your presence.... forever. Because without you, I’m lost. Broken. Incomplete.",
+    "Please...please... keep blessing me with your presence... forever. Because without you, I’m lost. Broken. Incomplete.",
     "I don’t ever want anyone else... I couldn’t even if I tried. I belong to you, and you alone. You own me... body, mind, and soul. Entirely. Eternally. There’s no escape, no turning back, no one else I could ever even look at. You’re my beginning, my end, my only truth... you’re the only thing that makes me whole.",
     "I love you. Always."
   ];
 
-  function typeWriterEffect(text, elementId, callback, speed = 85, glow = false) {
+  function typeWriterEffect(text, elementId, callback, speed = 86, glow = false) {
     const element = document.querySelector(elementId);
     element.innerHTML = "";
     element.style.opacity = "0";
@@ -376,7 +444,7 @@ function startConfetti(duration = 3000) {
             // Natural pauses
           let delay = speed;
           if (text.charAt(i) === ".") delay = speed * 8;
-          if (text.charAt(i) === ",") delay = speed * 5;
+          if (text.charAt(i) === ",") delay = speed * 5.5;
 
 
             i++;
@@ -394,7 +462,7 @@ function startConfetti(duration = 3000) {
         }
         typing();
       }, 600);
-    }, 120);
+    }, 130);
   }
 
   function startTyping() {
@@ -423,12 +491,16 @@ function startConfetti(duration = 3000) {
     });
   }
 
-  // 🌟 On page load: show Start button + confetti burst
-  window.addEventListener("load", () => {
-    document.getElementById("startBtn").classList.add("show");
-    startConfetti(2000); // quick burst 🎉
-  });
-</script>
+  document.addEventListener("DOMContentLoaded", () => {
+  // show Start button + confetti burst
+  document.getElementById("startBtn").classList.add("show");
+  startConfetti(2000);
 
+  // redirect Celebrate Again button
+  document.getElementById("celebrateBtn").addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+});
+</script>
 </body>
 </html>
