@@ -6,6 +6,32 @@
   <title>Message</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
+    /* 📱 Responsive adjustments */
+@media (max-width: 600px) {
+  .message-box {
+    width: 95%;         /* use almost full width */
+    padding: 15px;      /* less padding for smaller screens */
+    border-radius: 15px;
+  }
+
+  .message-box h1 {
+    font-size: 20px;    /* smaller heading */
+    line-height: 1.3;
+  }
+
+  .message-box p {
+    font-size: 13px;    /* scale down paragraph */
+    line-height: 1.5;
+    margin: 8px 0;
+  }
+
+  .neon-btn {
+    font-size: 14px;
+    padding: 10px 25px;
+    margin-top: 20px;
+  }
+}
+
     
     /* Prevent unwanted scrolling */
 html, body {
@@ -261,31 +287,44 @@ body::after {
   }
 
   // 🎆 Confetti Fireworks (used both on load + later if needed)
-  function startConfetti(duration = 3000) {
-    const animationEnd = Date.now() + duration;
-    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+  // 🎆 Confetti Fireworks (same style, but instant on load)
+function startConfetti(duration = 3000) {
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
 
-    function randomInRange(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    const interval = setInterval(() => {
-      const timeLeft = animationEnd - Date.now();
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        return;
-      }
-      const particleCount = 50 * (timeLeft / duration);
-      confetti(Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-      }));
-      confetti(Object.assign({}, defaults, {
-        particleCount,
-        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-      }));
-    }, 250);
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
   }
+
+  // 🔥 Fire an immediate burst
+  confetti(Object.assign({}, defaults, {
+    particleCount: 50,
+    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+  }));
+  confetti(Object.assign({}, defaults, {
+    particleCount: 50,
+    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+  }));
+
+  // 🎉 Continue bursts for the duration
+  const interval = setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) {
+      clearInterval(interval);
+      return;
+    }
+    const particleCount = 50 * (timeLeft / duration);
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+    }));
+    confetti(Object.assign({}, defaults, {
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+    }));
+  }, 250);
+}
+
 
   // 🎬 Start sequence when "Start" button is clicked
   document.getElementById("startBtn").addEventListener("click", () => {
