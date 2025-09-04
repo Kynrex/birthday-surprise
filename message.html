@@ -159,22 +159,24 @@ html, body {
     0 0 40px #ff66ff;
 }
 
+/* Heading stays centered */
 h1 {
   font-size: clamp(20px, 5vw, 28px);
   margin-bottom: 20px;
-  color: #fff;  /* ✅ make heading white */
+  color: #fff;
+  text-align: center;   /* ✅ keep centered */
   text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
-  
 }
 
+/* Paragraphs should be left-aligned (or justified) */
 p {
   font-size: clamp(12px, 3.5vw, 14px);
-  line-height: 1.6;
+  line-height: 1.7;
   margin: 12px 0;
-  color: #fff;  /* ✅ make paragraphs white */
+  color: #fff;
   text-shadow: 0 0 8px rgba(255,255,255,0.7);
   min-height: 1.4em;
-  text-align: center;
+  text-align: justify;  /* ✅ change from "center" to "justify" */
 }
 
 
