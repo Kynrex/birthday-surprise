@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sweet Login</title>
+  <!-- Fireworks / confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --glow: rgba(255, 255, 255, 0.15);
+      --accent1: #ff4e50;
+      --accent2: #f9d423;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: grid;
+      place-items: center;
+      background: radial-gradient(1200px 600px at 50% -200px, #1f1f1f 0%, #0f0f0f 60%, #000 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* soft vignette */
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      background: radial-gradient(800px 400px at 50% 0%, transparent 40%, rgba(0,0,0,.55) 100%);
+      pointer-events:none;
+    }
+
+    .card {
+      width: min(92vw, 460px);
+      padding: 28px 28px 34px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08) inset;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0 0 18px;
+      font-weight: 800;
+      letter-spacing: .3px;
+      text-shadow: 0 0 18px rgba(255, 255, 255, .15);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0 6px;
+    }
+
+    input[type="password"] {
+      width: 220px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.08);
+      color: #fff;
+      outline: none;
+      transition: border .2s, box-shadow .2s, transform .15s ease;
+    }
+    input[type="password"]::placeholder { color: #cfcfcf; opacity: .7; }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      box-shadow: 0 0 0 0 rgba(249,212,35,.0), 0 10px 28px rgba(0,0,0,.45);
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 0 25px rgba(249,212,35,.3), 0 10px 28px rgba(0,0,0,.45); }
+    .btn:active { transform: translateY(0); }
+
+    .hint { margin-top: 10px; font-size: 13px; opacity: .8; }
+    .error { color: #ff7b88; height: 18px; margin-top: 8px; font-size: 14px; }
+
+    .shake {
+      animation: shake .35s ease;
+      border-color: #ff7b88 !important;
+      box-shadow: 0 0 0 2px rgba(255,123,136,.25);
+    }
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(4px); }
+      30%, 50%, 70% { transform: translateX(-6px); }
+      40%, 60% { transform: translateX(6px); }
+    }
+
+    /* floating sparkles */
+    .spark {
+      position: fixed; width: 3px; height: 3px; border-radius: 50%;
+      background: radial-gradient(circle, #fff, #fff0 60%);
+      animation: float 6s linear infinite;
+      opacity: .6;
+    }
+    @keyframes float {
+      from { transform: translateY(110vh) translateX(0); }
+      to   { transform: translateY(-10vh) translateX(60px); }
+    }
+
+    canvas { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+  </style>
+</head>
+<body>
+  <!-- tiny ambience sparkles -->
+  <div class="spark" style="left:10%; animation-duration:7s;"></div>
+  <div class="spark" style="left:30%; animation-duration:8s;"></div>
+  <div class="spark" style="left:55%; animation-duration:6.5s;"></div>
+  <div class="spark" style="left:80%; animation-duration:7.5s;"></div>
+
+  <div class="card">
+    <h1>Welcome to the Celebration 🎉</h1>
+    <div class="input-row">
+      <input id="pw" type="password" placeholder="Enter password" autocomplete="off" />
+      <button class="btn" id="go">Let's Go!</button>
+    </div>
+    <div class="error" id="err"></div>
+    <div class="hint">Hint: It's my iphone passcode </b> 😉</div>
+  </div>
+
+  <canvas id="fx"></canvas>
+
+  <script>
+    const PASS = "050907"; // ← your chosen password
+    const pw = document.getElementById('pw');
+    const go = document.getElementById('go');
+    const err = document.getElementById('err');
+
+function celebrateAndGo() {
+  // fireworks burst for ~1.8s then redirect
+  const duration = 1800, end = Date.now() + duration;
+  const defaults = { startVelocity: 35, spread: 360, ticks: 70, gravity: 0.9, zIndex: 9999 };
+  const interval = setInterval(() => {
+    const timeLeft = end - Date.now();
+    if (timeLeft <= 0) { 
+      clearInterval(interval); 
+      location.href = "greeting.html";  
+      return; 
+    }
+    const particleCount = 60 * (timeLeft / duration);
+    confetti({ ...defaults, particleCount, origin: { x: 0.25, y: 0.3 }});
+    confetti({ ...defaults, particleCount, origin: { x: 0.75, y: 0.3 }});
+  }, 200);
+}
+
+
+    function submit() {
+      if (pw.value.trim() === PASS) {
+        err.textContent = "";
+        celebrateAndGo();
+      } else {
+        err.textContent = "That password is incorrect. Try your 6 digit birthdate.";
+        pw.classList.remove('shake'); // restart animation
+        void pw.offsetWidth;
+        pw.classList.add('shake');
+      }
+    }
+
+    go.addEventListener('click', submit);
+    pw.addEventListener('keydown', e => { if (e.key === 'Enter') submit(); });
+    // Autofocus input on load for nicer UX
+    window.addEventListener('load', () => pw.focus());
+  </script>
+</body>
+</html>

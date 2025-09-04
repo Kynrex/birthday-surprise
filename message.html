@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    
+    /* Prevent unwanted scrolling */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;   /* centers horizontally */
+  align-items: center;       /* centers vertically */
+  background: radial-gradient(circle at center, #2b0033, #0d001a);
+  background-size: cover;
+  background-attachment: fixed;
+  overflow: hidden;          /* removes scrollbars */
+}
+
+
+.message-box {
+  width: 90%;        /* responsive */
+  max-width: 850px;  /* limit on desktop */
+  padding: 25px;
+  border-radius: 20px;
+  background: rgba(0,0,0,0.6);
+  box-shadow: 0 0 25px rgba(255, 105, 180, 0.6),
+              0 0 45px rgba(255, 182, 193, 0.4);
+  animation: aura 6s ease-in-out infinite alternate;
+  backdrop-filter: blur(6px);
+  text-align: center;
+  color: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+
+/* Heading */
+.message-box h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
+}
+
+/* Paragraph */
+.message-box p {
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 12px 0;
+  text-shadow: 0 0 8px rgba(255,255,255,0.7);
+  text-align: center;
+}
+
+/* Glow animation */
+@keyframes aura {
+  0% { box-shadow: 0 0 25px rgba(255, 105, 180, 0.6), 0 0 45px rgba(255, 182, 193, 0.4); }
+  50% { box-shadow: 0 0 35px rgba(147, 112, 219, 0.8), 0 0 65px rgba(255, 105, 180, 0.7); }
+  100% { box-shadow: 0 0 25px rgba(255, 20, 147, 0.9), 0 0 55px rgba(255, 182, 193, 0.6); }
+}
+
+
+h1 {
+  font-size: clamp(20px, 5vw, 28px);  /* ✅ Responsive heading */
+  margin-bottom: 20px;
+  text-shadow: 0 0 15px #ff69b4, 0 0 30px #ff1493;
+}
+
+p {
+  font-size: clamp(12px, 3.5vw, 14px); /* ✅ Responsive text */
+  line-height: 1.6;
+  margin: 12px 0;
+  text-shadow: 0 0 8px rgba(255,255,255,0.7);
+  min-height: 1.4em;
+  text-align: center;
+}
+
+
+    p span {
+      display: inline;
+    }
+
+    b {
+      font-size: 18px;
+      color: #ffb6c1;
+      display: inline-block;
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+      50% { text-shadow: 0 0 20px #ffb6c1, 0 0 40px #ff69b4; }
+      100% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493; }
+    }
+
+    .neon-btn {
+      margin-top: 30px;
+      padding: 14px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      background: transparent;
+      border: 2px solid #ff00cc;
+      border-radius: 30px;
+      text-transform: uppercase;
+      cursor: pointer;
+      letter-spacing: 2px;
+      text-shadow: 0 0 8px #ff00cc, 0 0 20px #ff00cc;
+      box-shadow: 0 0 15px #ff00cc, inset 0 0 15px #ff00cc;
+      transition: all 0.3s ease;
+      opacity: 0;             /* hidden by default */
+      transform: scale(0.9);
+    }
+
+    .neon-btn.show {
+      animation: showBtn 1s ease-out forwards, pulseGlow 2s infinite 1s;
+    }
+
+    @keyframes showBtn {
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 10px #ff00cc, 0 0 30px #ff00cc, inset 0 0 10px #ff00cc; }
+      50% { box-shadow: 0 0 25px #ff00cc, 0 0 60px #ff33cc, inset 0 0 20px #ff33cc; }
+      100% { box-shadow: 0 0 10px #ff00cc, 0 0 30px #ff00cc, inset 0 0 10px #ff00cc; }
+    }
+    .line-glow {
+  animation: fadeGlow 1.5s ease-in-out;
+}
+
+@keyframes fadeGlow {
+  0% {
+    opacity: 0.5;
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(255,255,255,0.7);
+  }
+}
+/* Initially hidden */
+.fade-in {
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+}
+
+/* When active */
+.fade-in.active {
+  opacity: 1;
+}
+/* 🌟 Smooth typing animation */
+.typewriter span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.typewriter span.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* 🌟 Starry Shimmer Background with Twinkling */
+body::before {
+  content: "";
+  position: fixed;   /* ✅ stays full-screen & won’t break flex centering */
+  top: 0; left: 0;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 70% 80%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.8px 1.8px at 40% 60%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 85% 20%, rgba(255,255,255,0.75), transparent),
+    radial-gradient(1.2px 1.2px at 15% 75%, rgba(255,255,255,0.5), transparent);
+  background-size: 200px 200px;
+  animation: shimmerMove 60s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+/* ✨ Twinkle Overlay */
+body::after {
+  content: "";
+  position: fixed;   /* ✅ same fix */
+  top: 0; left: 0;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(2px 2px at 30% 40%, rgba(255,255,255,0.8), transparent),
+    radial-gradient(1.5px 1.5px at 60% 20%, rgba(255,255,255,0.7), transparent),
+    radial-gradient(2px 2px at 80% 70%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1.5px 1.5px at 50% 90%, rgba(255,255,255,0.5), transparent);
+  background-size: 200px 200px;
+  animation: twinkle 6s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+/* Keep message box above everything */
+.message-box {
+  position: relative;
+  z-index: 1;  /* ✅ ensures box is always on top */
+}
+
+  </style>
+</head>
+<body>
+  <div class="message-box">
+  <h1>Happy Birthday, Rai ❤️</h1>
+
+  <p id="line1"></p>
+  <p id="line2"></p>
+  <p id="line3"></p>
+  <p id="line4"></p>
+  <p id="line5"></p>
+  <p id="line6"></p>
+  <p id="line7"></p>
+  <p id="line8"><b></b></p>
+
+  <!-- 🌟 New Start Button -->
+  <button id="startBtn" class="neon-btn">Start</button>
+
+  <!-- Celebrate Again (hidden initially) -->
+  <button id="celebrateBtn" class="neon-btn" style="display:none;" onclick="window.location.href='index.html'">Celebrate Again</button>
+</div>
+
+<!-- 🎵 Background music (play once, no loop) -->
+<audio id="bg-music">
+  <source src="Ishq Di Baajiyaan.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+  <script>
+  // 🎵 Fade-in music
+  const music = document.getElementById("bg-music");
+  music.volume = 0;
+
+  function fadeInAudio(audio, targetVolume = 0.3, step = 0.02, interval = 200) {
+    let currentVolume = 0;
+    const fadeInterval = setInterval(() => {
+      if (currentVolume < targetVolume) {
+        currentVolume += step;
+        if (currentVolume > targetVolume) currentVolume = targetVolume;
+        audio.volume = currentVolume;
+      } else {
+        clearInterval(fadeInterval);
+      }
+    }, interval);
+  }
+
+  // 🎆 Confetti Fireworks (used both on load + later if needed)
+  function startConfetti(duration = 3000) {
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        return;
+      }
+      const particleCount = 50 * (timeLeft / duration);
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+      }));
+      confetti(Object.assign({}, defaults, {
+        particleCount,
+        origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+      }));
+    }, 250);
+  }
+
+  // 🎬 Start sequence when "Start" button is clicked
+  document.getElementById("startBtn").addEventListener("click", () => {
+    const btn = document.getElementById("startBtn");
+    btn.style.display = "none"; // hide start button
+
+    // play music once with fade-in
+    music.play().then(() => {
+      fadeInAudio(music);
+    }).catch(err => console.log("Music blocked:", err));
+
+    // ✅ Now start typing immediately (confetti already happened on load)
+    startTyping();
+  });
+
+  // ✨ Typewriter Effect
+  const messages = [
+    "Congratulations on being 18. You truly are the best person I’ve ever met. The funniest, kindest, most inspiring, cheerful, caring, and emotionally mature soul I’ve come across.",
+    "You’re not a once-in-a-million kind of girl. You’re a once-in-a-lifetime kind of woman... rare, unforgettable, the kind that leaves a mark no one else could ever erase. Your soul is incredibly beautiful, and you yourself are devastatingly gorgeous. And those brown eyes of yours… I fall for them every single time. I swear, I could drown in them and still beg for more.",
+    "But more than your beauty, it’s your personality that never stops astonishing me. You deserve to be cherished, adored, and worshipped like the goddess you are.",
+    "I hope this year brings you endless joy, love, and success. May all your dreams come true, and may you continue to shine as brightly as you do now. I’m just so grateful to have you in my life, Rai.",
+    "I don’t know what the future holds for us… but your presence alone feels like an ethereal butterfly soaring through my heart every single time we’re together.",
+    "Please... please... keep blessing me with your presence.... forever. Because without you, I’m lost. Broken. Incomplete.",
+    "I don’t ever want anyone else... I couldn’t even if I tried. I belong to you, and you alone. You own me... body, mind, and soul. Entirely. Eternally. There’s no escape, no turning back, no one else I could ever even look at. You’re my beginning, my end, my only truth... you’re the only thing that makes me whole.",
+    "I love you. Always."
+  ];
+
+  function typeWriterEffect(text, elementId, callback, speed = 85, glow = false) {
+    const element = document.querySelector(elementId);
+    element.innerHTML = "";
+    element.style.opacity = "0";
+    element.style.textShadow = "none";
+    element.style.transition = "opacity 1.5s ease-in-out, text-shadow 1.5s ease-in-out";
+
+    setTimeout(() => {
+      element.style.opacity = "1";
+      element.style.textShadow =
+        "0 0 10px rgba(255, 105, 180, 0.6), 0 0 20px rgba(255, 20, 147, 0.4)";
+
+      setTimeout(() => {
+        let i = 0;
+        function typing() {
+          if (i < text.length) {
+            const charSpan = document.createElement("span");
+            charSpan.textContent = text.charAt(i);
+            element.appendChild(charSpan);
+            setTimeout(() => charSpan.classList.add("show"), 20);
+
+            // Natural pauses
+          let delay = speed;
+          if (text.charAt(i) === ".") delay = speed * 8;
+          if (text.charAt(i) === ",") delay = speed * 5;
+
+
+            i++;
+            setTimeout(typing, delay);
+          } else {
+            if (glow) {
+              element.style.color = "#ff69b4";
+              element.style.fontWeight = "bold";
+              element.style.textShadow =
+                "0 0 12px #ff69b4, 0 0 25px #ff1493, 0 0 40px #ff69b4";
+              element.style.transition = "all 1s ease-in-out";
+            }
+            if (callback) setTimeout(callback, 1000);
+          }
+        }
+        typing();
+      }, 600);
+    }, 120);
+  }
+
+  function startTyping() {
+    typeWriterEffect(messages[0], "#line1", () => {
+      typeWriterEffect(messages[1], "#line2", () => {
+        typeWriterEffect(messages[2], "#line3", () => {
+          typeWriterEffect(messages[3], "#line4", () => {
+            typeWriterEffect(messages[4], "#line5", () => {
+              typeWriterEffect(messages[5], "#line6", () => {
+                typeWriterEffect(messages[6], "#line7", () => {
+                  typeWriterEffect(messages[7], "#line8 b", () => {
+                    const btn = document.getElementById("celebrateBtn");
+                    btn.style.display = "inline-block";
+                    btn.style.opacity = "0";
+                    setTimeout(() => {
+                      btn.style.transition = "opacity 1.5s ease-in-out";
+                      btn.style.opacity = "1";
+                    }, 200);
+                  }, 100, true);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  }
+
+  // 🌟 On page load: show Start button + confetti burst
+  window.addEventListener("load", () => {
+    document.getElementById("startBtn").classList.add("show");
+    startConfetti(2000); // quick burst 🎉
+  });
+</script>
+
+</body>
+</html>

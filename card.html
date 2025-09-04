@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Special Surprise</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url("bg.jpg") no-repeat center center fixed,
+                  radial-gradient(circle at center, #0d0b33 0%, #0a0a1a 100%);
+      background-size: cover;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+      position: relative;
+    }
+
+    .card {
+      position: relative;
+      text-align: center;
+      padding: 50px 40px;
+      border-radius: 20px;
+      background: rgba(15, 15, 35, 0.85);
+      box-shadow: 0 0 30px rgba(124, 58, 237, 0.8),
+                  0 0 60px rgba(59, 130, 246, 0.6);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .emoji {
+      font-size: 3rem;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .title {
+      font-size: 2rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f7ff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
+      margin: 15px 0;
+    }
+
+    .btn {
+      padding: 15px 40px;
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: white;
+      background: linear-gradient(90deg, #00c6ff, #ff4ecd);
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(0, 200, 255, 0.7);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.3);
+      transform: skewX(-45deg);
+      transition: 0.6s;
+    }
+
+    .btn:hover::after {
+      left: 200%;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.8);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="emoji">💌</div>
+    <div class="title">A Special Surprise</div>
+    <button class="btn" onclick="window.location.href='message.html'">
+      Open Me 🎁
+    </button>
+  </div>
+</body>
+</html>
