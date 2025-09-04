@@ -6,6 +6,51 @@
   <title>Message</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
+    /* 📱 Mobile improvements */
+@media (max-width: 600px) {
+  body {
+    padding: 10px; /* keeps box away from screen edges */
+  }
+
+  .message-box {
+    width: 100%;
+    max-width: 95%;
+    padding: 18px 14px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.4), 
+                0 0 25px rgba(255, 182, 193, 0.3);
+  }
+
+  .message-box h1 {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+
+  .message-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 10px 0;
+  }
+
+  .sparkle-heart {
+    font-size: 1em; /* smaller heart so heading fits */
+    text-shadow: 0 0 6px #ff69b4,
+                 0 0 10px #ff1493,
+                 0 0 15px #ff33cc;
+  }
+
+  .message-content {
+    max-height: 65vh; /* gives more scroll space */
+    padding-right: 6px;
+  }
+
+  .neon-btn {
+    font-size: 14px;
+    padding: 10px 22px;
+    margin-top: 18px;
+  }
+}
+
     body {
   display: flex;
   justify-content: center;
